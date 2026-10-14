@@ -1,5 +1,6 @@
 #include <raylib.h>
 
+#include "explosion.hpp"
 #include "fire.hpp"
 #include "rain.hpp"
 
@@ -7,19 +8,21 @@ constexpr int SCREEN_WIDTH  = 1280;
 constexpr int SCREEN_HEIGHT = 720;
 constexpr int TARGET_FPS    = 60;
 
-static void Update(Rain &rain, Fire &fire, float dt)
+static void Update(Rain &rain, Fire &fire, Explosion &explosion, float dt)
 {
     rain.Update(dt);
     fire.Update(dt);
+    explosion.Update(dt);
 }
 
-static void Draw(const Rain &rain, const Fire &fire)
+static void Draw(const Rain &rain, const Fire &fire, const Explosion &explosion)
 {
     BeginDrawing();
     ClearBackground(BLACK);
 
     rain.Draw();
     fire.Draw();
+    explosion.Draw();
     DrawFPS(10, 10);
 
     EndDrawing();
@@ -33,11 +36,12 @@ int main()
 
     Rain rain;
     Fire fire;
+    Explosion explosion;
 
     while (!WindowShouldClose())
     {
-        Update(rain, fire, GetFrameTime());
-        Draw(rain, fire);
+        Update(rain, fire, explosion, GetFrameTime());
+        Draw(rain, fire, explosion);
     }
 
     CloseWindow();
